@@ -1,0 +1,32 @@
+h1, h2, h3 {
+    font-family: 'Lexend', sans-serif;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+}
+
+h1 {
+    font-size: 20pt;    
+    margin-bottom: 60px;
+    background-color: #1C1F24;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+h2 {
+    font-size: 15pt;
+    margin-bottom: 20px;
+}
+
+p {
+    font-family: 'Lexend', sans-serif;
+    font-weight: bold;
+    font-size: 11pt;
+    text-decoration: none;
+    color: white;
+}
+
+a:not(header a) {
+    font-family: 'Lexend', sans-serif;
+    font-size: 11pt;
+}
