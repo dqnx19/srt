@@ -4,6 +4,7 @@
     "description": "Fictional transport system",
     "lang": "en-GB",
     "start_url": "/",
+    "scope": "/",
     "display": "standalone",
     "orientation": "portrait",
     "theme_color": "#000000",
@@ -13,28 +14,10 @@
     ],
     "icons": [
         {
-            "src": "/img/icon-any-192x192.png",
-            "sizes": "192x192",
-            "type": "image/png",
-            "purpose": "any"
-        },
-        {
-            "src": "/img/icon-maskable-512x512.png",
-            "sizes": "512x512",
-            "type": "image/png",
-            "purpose": "maskable"
-        },
-        {
-            "src": "/img/icon-any-192x192.png",
-            "sizes": "192x192",
-            "type": "image/png",
-            "purpose": "any"
-        },
-        {
-            "src": "/img/icon-maskable-512x512.png",
-            "sizes": "512x512",
-            "type": "image/png",
-            "purpose": "maskable"
+            "src": "/img/icons/logo.svg",
+            "sizes": "192x192 512x512",
+            "type": "image/svg+xml,image/x-icon",
+            "purpose": "any maskable"
         }
     ]
 }

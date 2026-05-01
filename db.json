@@ -1,8 +1,0 @@
-[
-    {
-        "username" : "username",
-        "password" : "hashedpassword",
-        "balance" : "1",
-        "tickets" : {}
-    }
-]

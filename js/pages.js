@@ -1,6 +1,6 @@
 document.querySelector("header").innerHTML = `
 <button onclick="showHome()">
-<img src="img/favicon.svg">
+    <img src="img/icons/logo.svg" alt="">
 </button>
 <button onclick="showHome()">Home Page</button>
 <button onclick="showConnectionTypes()">Connection Types</button>
