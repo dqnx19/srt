@@ -1,4 +1,4 @@
-<img src="https://sigma-republic-transport.netlify.app/img/favicon.svg" width="64" height="64">
+<img src="img/favicon.png" width="64" height="64">
 
 # Sigma Republic Transport
 
