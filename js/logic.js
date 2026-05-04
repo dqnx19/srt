@@ -18,6 +18,16 @@ const i18n = {
         about: "About",
         technical_details: "Technical Details",
 
+        /* Account */
+        account_info: "Account Info",
+        tickets: "Tickets",
+        buy_ticket: "Buy Ticket",
+
+        balance: "Balance",
+        add_money: "Add Money",
+        logout: "Logout",
+
+
         /* Connection Types */
         regional_bahn_train: "Regional Bahn Train",
         regional_express_train: "Regional Express Train",
@@ -154,6 +164,15 @@ const i18n = {
         fare: "Tarif",
         about: "O nás",
         technical_details: "Technické detaily",
+
+        /* Account */
+        account_info: "Inofrmace o účtu",
+        tickets: "Jízdenky",
+        buy_ticket: "Koupit Jízdenku",
+
+        balance: "Zůstatek",
+        add_money: "Přidat peníze",
+        logout: "Odhlásit se",
 
         /* Connection Types */
         regional_bahn_train: "Regionální vlak",
@@ -340,10 +359,56 @@ function showAccount() {
     if (window.logic.currentUser) {
         main.innerHTML = `
       <h1>Account</h1>
+      <section id="user-info">
+        <h2>${t.account_info}</h2>
+        <p>${t.balance}: ${window.logic.currentUser.balance.toFixed(2)} €</p>
+        <br>
+        <button onclick="window.logic.addMoney()">Add Money</button>
+        <button onclick="window.logic.logout()">Logout</button>
+        </section>
       <section>
-        <h3>Welcome ${window.logic.currentUser.username}! Balance: ${window.logic.currentUser.balance.toFixed(2)} EUR</h3>
-<button onclick="window.logic.addMoney()" style="background-color: green; padding: 10px; border-radius: 10px; height: 50px;">Add Money</button>\n        <button onclick="window.logic.logout()" style="background-color: coral; padding: 10px; border-radius: 10px; height: 50px;">Logout</button>\n      </section>
+        <h2>${t.tickets}:</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Zones</th>
+              <th>Validity Hours</th>
+              <th>Type</th>
+              <th>Price</th>
+              <th>Zone Marked</th>
+              <th>Date Marked</th>
+              <th>Time Marked</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${(() => {
+                const tickets = window.logic.currentUser.tickets || {};
+                if (Object.keys(tickets).length === 0) {
+                    return '<tr><td colspan="6" style="text-align:center; ">No Tickets</td></tr>';
+                }
+                const ticketTypeNames = {
+                    'full2': t.full_2nd_class,
+                    'full1': t.full_1st_class,
+                    'discounted2': t.discounted_2nd_class,
+                    'discounted1': t.discounted_1st_class
+                };
+                return Object.entries(tickets).sort(([a], [b]) => b.localeCompare(a)).map(([id, data]) =>
+                    `<tr>
+                  <td>${data.zones}</td>
+                  <td>${data.validityHours || '-'} h</td>
+                  <td>${ticketTypeNames[data.type] || data.type}</td>
+                  <td>${data.price}€</td>
+                  <td>${data.zoneMarked || '-'}</td>
+                  <td>${data.date}</td>
+                  <td>${data.time ? data.time.slice(0, 5) : '-'}</td>
+                </tr>`
+                ).join('');
+            })()}
+          </tbody>
+        </table>
+      </section>
       <section>
+      <h2>${t.buy_ticket}</h2>
         <form id="buy-ticket">
           <select name="zones" id="zones">
             <option value="1" selected>1 zone / 0.5 hours</option>
@@ -367,7 +432,7 @@ function showAccount() {
           <input type="text" name="zone-marked" placeholder="Zone Marked">
           <input type="date" name="date-marked">
           <input type="time" name="time-marked">
-          <button type="submit" style="background-color: coral; padding: 10px; border-radius: 10px; height: 50px;">Buy Ticket</button>
+          <button type="submit">Buy Ticket</button>
         </form>
       </section>
       `;
@@ -977,7 +1042,15 @@ window.logic = {};
 
 window.logic.currentUser = JSON.parse(localStorage.getItem('srtUser') || 'null');
 
+async function sha256(str) {
+    const msgUint8 = new TextEncoder().encode(str);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
 async function loginOrRegister(username, password) {
+    const passwordHash = await sha256(password);
     console.log('Login/Register:', username);
     const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
         headers: { "X-Master-Key": API_KEY }
@@ -987,12 +1060,12 @@ async function loginOrRegister(username, password) {
 
     let users = Array.isArray(data.record) ? data.record : [];
 
-    let user = users.find(u => u.username === username);
+    let user = users.find(u => u.username === username && u.passwordHash === passwordHash);
 
-    if (user && user.password === password) {
+    if (user) {
         return { status: "login", user };
-    } else if (!user) {
-        const newUser = { username, password, balance: 100, tickets: {} };
+    } else {
+        const newUser = { username, passwordHash, balance: 100, tickets: {} };
         users.push(newUser);
         await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
             method: "PUT",
@@ -1004,7 +1077,6 @@ async function loginOrRegister(username, password) {
         });
         return { status: "registered", user: newUser };
     }
-    return { status: "error", message: "Wrong credentials" };
 }
 
 async function saveUser(user) {
@@ -1037,9 +1109,20 @@ async function saveUser(user) {
     }
 }
 
-function calculatePrice(zonesStr) {
-    const zones = parseInt(zonesStr) || 0;
-    return zones * 10;
+const priceTable = {
+    '1': 0.10, '2': 0.20, '3': 0.30, '4': 0.40, '5': 0.50,
+    '6': 0.60, '7': 0.70, '8': 0.80, '9': 0.90, '10': 1.00, 'all': 2.00
+};
+
+function calculatePrice(zonesStr, type) {
+    const base = priceTable[zonesStr] || 0.10;
+    let multiplier = 1;
+    switch (type) {
+        case 'full1': multiplier = 3; break;
+        case 'discounted2': multiplier = 0.5; break;
+        case 'discounted1': multiplier = 1.5; break;
+    }
+    return base * multiplier;
 }
 
 function generateTicket(ticketData) {
@@ -1157,23 +1240,21 @@ window.logic.handleBuy = async function (e) {
     const date = dateEl ? dateEl.value : new Date().toISOString().split('T')[0];
     const time = timeEl ? timeEl.value : new Date().toTimeString().slice(0, 5);
 
-    let basePrice = calculatePrice(zones);
-    let multiplier = 1;
-    switch (type) {
-        case 'full1': multiplier = 3; break;
-        case 'discounted2': multiplier = 0.5; break;
-        case 'discounted1': multiplier = 1.5; break;
-    }
-    const price = basePrice * multiplier;
+    const validityHoursMap = {
+      '1': '0.5', '2': '1', '3': '1.5', '4': '2', '5': '2.5',
+      '6': '3', '7': '3.5', '8': '4', '9': '4.5', '10': '5', 'all': '24'
+    };
+    const validityHours = validityHoursMap[zones];
+
+    const price = calculatePrice(zones, type);
 
     if (window.logic.currentUser.balance < price) {
         alert(`Insufficient balance! Need ${price.toFixed(2)}EUR, have ${window.logic.currentUser.balance.toFixed(2)}EUR`);
         return;
     }
 
-    const ticketId = `TKT_${Date.now()}`;
-    const ticketData = { id: ticketId, zones, type, zoneMarked, date, time, price: price.toFixed(2) };
-    window.logic.currentUser.tickets[ticketId] = ticketData;
+    const ticketData = { zones, validityHours, type, zoneMarked, date, time, price: price.toFixed(2) };
+    window.logic.currentUser.tickets[`TKT_${Date.now()}`] = ticketData;
     window.logic.currentUser.balance -= price;
     window.logic.currentUser.balance = Math.max(0, parseFloat(window.logic.currentUser.balance.toFixed(2)));
 

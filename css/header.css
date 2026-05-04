@@ -15,7 +15,7 @@ header {
     overflow-x: auto;
 }
 
-header button {
+header button, footer button {
     font-family: 'Lexend', sans-serif;
     font-weight: bold;
     font-size: 20px;
@@ -24,6 +24,8 @@ header button {
     padding: 10px;
     border-radius: 10px;
     transition: color 0.3s ease, text-underline-offset 0.3s ease;
+    background-color: transparent;
+    border: none;
 }
 
 header button:hover {
@@ -35,10 +37,6 @@ header button:hover {
 header img {
     width: 75px;
     height: 75px;
-}
-
-button {
-    all: unset;
 }
 
 @media (max-width: 600px) {

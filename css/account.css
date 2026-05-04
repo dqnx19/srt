@@ -1,11 +1,13 @@
-#login, #buy-ticket {
-    display: flex;;
+#login,
+#buy-ticket {
+    display: flex;
     flex-direction: column;
     padding: 10px;
     gap: 10px;
 }
 
-input, select {
+input,
+select {
     padding: 10px;
     border-radius: 10px;
     height: 50px;
@@ -14,11 +16,12 @@ input, select {
     caret-color: rgb(83, 83, 255);
 }
 
-#login button, #buy-ticket button {
+button:not(header button, footer button) {
     background-color: coral;
     text-align: center;
-    height: 15px;
+    height: 50px;
     border-radius: 10px;
     border: 1px solid #4b4b4b;
     cursor: pointer;
+    padding: 10px;
 }
