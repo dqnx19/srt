@@ -15,24 +15,18 @@ header {
     overflow-x: auto;
 }
 
-header button, footer button {
+footer button {
     font-family: 'Lexend', sans-serif;
     font-weight: bold;
     font-size: 20px;
     text-decoration: none;
     text-align: left;
-    padding: 10px;
     border-radius: 10px;
     transition: color 0.3s ease, text-underline-offset 0.3s ease;
     background-color: transparent;
     border: none;
 }
 
-header button:hover {
-    text-underline-offset: 4px;
-    color: #00B7FF;
-
-}
 
 header img {
     width: 75px;
