@@ -449,20 +449,22 @@ function showAccount() {
       `;
     }
     window.logic.init();
-}
 
-function showAbout() {
-    document.title = t.about_title;
-    scrollUp();
-    main.innerHTML = `
+    function showAccountSignedIn() {
+        main.innerHTML = `
+              <h1>Account</h1>      <section id="user-info">        <h2>${t.account_info}</h2>        <p>${t.balance}: ${window.logic.currentUser.balance.toFixed(2)} €</p>        <br>        <button onclick="window.logic.addMoney()">Add Money</button>        <button onclick="window.logic.logout()">Logout</button>        </section>      <section>        <h2>${t.tickets}:</h2>        <table>          <thead>            <tr>              <th>Zones</th>              <th>Validity Hours</th>              <th>Type</th>              <th>Price</th>              <th>Zone Marked</th>              <th>Date Marked</th>              <th>Time Marked</th>            </tr>          </thead>          <tbody>            ${(() => { const tickets = window.logic.currentUser.tickets || {}; if (Object.keys(tickets).length === 0) { return '<tr><td colspan="6" style="text-align:center; ">No Tickets</td></tr>'; } const ticketTypeNames = { 'full2': t.full_2nd_class, 'full1': t.full_1st_class, 'discounted2': t.discounted_2nd_class, 'discounted1': t.discounted_1st_class }; return Object.entries(tickets).sort(([a], [b]) => b.localeCompare(a)).map(([id, data]) => `<tr>                  <td>${data.zones}</td>                  <td>${data.validityHours || '-'} h</td>                  <td>${ticketTypeNames[data.type] || data.type}</td>                  <td>${data.price}€</td>                  <td>${data.zoneMarked || '-'}</td>                  <td>${data.date}</td>                  <td>${data.time ? data.time.slice(0, 5) : '-'}</td>                </tr>`).join(''); })()}          </tbody>        </table>      </section>      <section>      <h2>${t.buy_ticket}</h2>        <form id="buy-ticket">          <select name="zones" id="zones">            <option value="1" selected>1 zone / 0.5 hours</option>            <option value="2">2 zones /1 hour</option>            <option value="3">3 zones /1.5 hours</option>            <option value="4">4 zones /2 hours</option>            <option value="5">5 zones /2.5 hours</option>            <option value="6">6 zones /3 hours</option>            <option value="7">7 zones /3.5 hours</option>            <option value="8">8 zones /4 hours</option>            <option value="9">9 zones /4.5 hours</option>            <option value="10">10 zones /5 hours</option>            <option value="all">all zones/ 12 hours</option>          </select>          <select name="type" id="type">            <option value="full2" selected>Full 2nd class</option>            <option value="full1">Full 1st class</option>            <option value="discounted2">Discounted 2nd class</option>            <option value="discounted1">Discounted 1st class</option>          </select>          <input type="text" name="zone-marked" placeholder="Zone Marked">          <input type="date" name="date-marked">          <input type="time" name="time-marked">          <button type="submit">Buy Ticket</button>        </form>      </section>      `;
+    } function showAccountSignedOut() { main.innerHTML = `      <h1>Account</h1>      <section>        <form id="login">          <input type="text" placeholder="username">          <input type="password" placeholder="Password">          <button type="submit" style="background-color: coral; padding: 10px; border-radius: 10px; height: 50px;">Login</button>        </form>      </section>      `; } function showAbout() {
+        document.title = t.about_title;
+        scrollUp();
+        main.innerHTML = `
     <h1>${t.about}</h1>
     `
-}
+    }
 
-function showConnectionTypes() {
-    document.title = t.connection_types_title;
-    scrollUp();
-    main.innerHTML = `
+    function showConnectionTypes() {
+        document.title = t.connection_types_title;
+        scrollUp();
+        main.innerHTML = `
     <h1>${t.connection_types}</h1>
             <section>
                 <h2>${t.regional_bahn_train}</h2>
@@ -505,12 +507,12 @@ function showConnectionTypes() {
                 <p>${t.route_type}: ${t.urban}/${t.suburban}</p>
             </section>
     `
-}
+    }
 
-function showVehicles() {
-    document.title = t.vehicles_title;
-    scrollUp();
-    main.innerHTML = `
+    function showVehicles() {
+        document.title = t.vehicles_title;
+        scrollUp();
+        main.innerHTML = `
     <h1>Vehicles</h1>
         <section>
             <h2>Skoda 18Ev ${t.cars_2}</h2>
@@ -802,12 +804,12 @@ function showVehicles() {
                 </span>
         </section>
     `
-}
+    }
 
-function showFare() {
-    document.title = t.fare_title;
-    scrollUp();
-    main.innerHTML = `
+    function showFare() {
+        document.title = t.fare_title;
+        scrollUp();
+        main.innerHTML = `
     <h1>${t.fare}</h1>
             <section id="tickets">
                 <h2>${t.tickets}</h2>
@@ -958,12 +960,12 @@ function showFare() {
                 </table>
             </section>
     `
-}
+    }
 
-function showAbout() {
-    document.title = t.about_title;
-    scrollUp();
-    main.innerHTML = `
+    function showAbout() {
+        document.title = t.about_title;
+        scrollUp();
+        main.innerHTML = `
     <h1>${t.about}</h1>
         <section>
             <h2>${t.what_is_srt}</h2>
@@ -976,12 +978,12 @@ function showAbout() {
             </ul>
         </section>
     `;
-}
+    }
 
-function showTechnicalDetails() {
-    document.title = t.technical_details_title;
-    scrollUp();
-    main.innerHTML = `
+    function showTechnicalDetails() {
+        document.title = t.technical_details_title;
+        scrollUp();
+        main.innerHTML = `
     <h1>${t.technical_details}</h1>
             <section>
                 <h2>${t.rolling_stock_classes}</h2>
@@ -1031,266 +1033,266 @@ function showTechnicalDetails() {
                 <li>{gong} {station name} terminus station please exit the vehicle.</li>
             </section>
     `
-}
-
-
-
-const BIN_ID = "69e506ab36566621a8cd6ac0";
-const API_KEY = "$2a$10$TocawYMNB.KMjjn2ISFy9ecxge8ja9EHy3PPq75uApN/56cCRaJwq";
-
-window.logic = {};
-
-window.logic.currentUser = JSON.parse(localStorage.getItem('srtUser') || 'null');
-
-async function sha256(str) {
-    const msgUint8 = new TextEncoder().encode(str);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
-async function loginOrRegister(username, password) {
-    const passwordHash = await sha256(password);
-    console.log('Login/Register:', username);
-    const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-        headers: { "X-Master-Key": API_KEY }
-    });
-    const data = await res.json();
-    console.log('Data:', data);
-
-    let users = Array.isArray(data.record) ? data.record : [];
-
-    let user = users.find(u => u.username === username && u.passwordHash === passwordHash);
-
-    if (user) {
-        return { status: "login", user };
-    } else {
-        const newUser = { username, passwordHash, balance: 100, tickets: {} };
-        users.push(newUser);
-        await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "X-Master-Key": API_KEY
-            },
-            body: JSON.stringify(users)
-        });
-        return { status: "registered", user: newUser };
     }
-}
 
-async function saveUser(user) {
-    try {
+
+
+    const BIN_ID = "69e506ab36566621a8cd6ac0";
+    const API_KEY = "$2a$10$TocawYMNB.KMjjn2ISFy9ecxge8ja9EHy3PPq75uApN/56cCRaJwq";
+
+    window.logic = {};
+
+    window.logic.currentUser = JSON.parse(localStorage.getItem('srtUser') || 'null');
+
+    async function sha256(str) {
+        const msgUint8 = new TextEncoder().encode(str);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function loginOrRegister(username, password) {
+        const passwordHash = await sha256(password);
+        console.log('Login/Register:', username);
         const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-            headers: {
-                "X-Master-Key": API_KEY
-            }
+            headers: { "X-Master-Key": API_KEY }
         });
-
         const data = await res.json();
-        let users = data.record || [];
+        console.log('Data:', data);
 
-        const userIndex = users.findIndex(u => u.username === user.username);
-        if (userIndex !== -1) {
-            users[userIndex] = user;
-        }
+        let users = Array.isArray(data.record) ? data.record : [];
 
-        await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "X-Master-Key": API_KEY
-            },
-            body: JSON.stringify(users)
-        });
-        console.log('User saved successfully');
-    } catch (err) {
-        console.error('Save error:', err);
-    }
-}
+        let user = users.find(u => u.username === username && u.passwordHash === passwordHash);
 
-const priceTable = {
-    '1': 0.10, '2': 0.20, '3': 0.30, '4': 0.40, '5': 0.50,
-    '6': 0.60, '7': 0.70, '8': 0.80, '9': 0.90, '10': 1.00, 'all': 2.00
-};
-
-function calculatePrice(zonesStr, type) {
-    const base = priceTable[zonesStr] || 0.10;
-    let multiplier = 1;
-    switch (type) {
-        case 'full1': multiplier = 3; break;
-        case 'discounted2': multiplier = 0.5; break;
-        case 'discounted1': multiplier = 1.5; break;
-    }
-    return base * multiplier;
-}
-
-function generateTicket(ticketData) {
-    console.log('Ticket generated:', ticketData);
-    alert('Ticket bought! PDF/QR generation ready (check console).');
-}
-
-window.logic.init = function () {
-    if (window.logic._initDone) {
-        console.log('Logic init already done, skipping');
-        return;
-    }
-    window.logic._initDone = true;
-    console.log('=== Logic init START ===');
-
-    console.log('Current user:', window.logic.currentUser);
-
-    // Find relevant form based on current page state
-    const loginForm = document.getElementById('login');
-    const buyForm = document.getElementById('buy-ticket');
-    console.log('Login form:', loginForm);
-    console.log('Buy form:', buyForm);
-
-    // Single clean setup: toggle visibility first, then safe listeners
-    if (loginForm && buyForm) {
-        if (window.logic.currentUser) {
-            loginForm.style.display = 'none !important';
-            buyForm.style.display = 'flex';
-            console.log('Logged in - HIDE login, SHOW buy');
+        if (user) {
+            return { status: "login", user };
         } else {
-            loginForm.style.display = 'flex';
-            buyForm.style.display = 'none !important';
-            console.log('Not logged - SHOW login, HIDE buy');
+            const newUser = { username, passwordHash, balance: 100, tickets: {} };
+            users.push(newUser);
+            await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Master-Key": API_KEY
+                },
+                body: JSON.stringify(users)
+            });
+            return { status: "registered", user: newUser };
         }
     }
 
-    // Safe listeners (remove first, then add)
-    if (loginForm) {
-        loginForm.removeEventListener('submit', window.logic.handleLogin);
-        loginForm.addEventListener('submit', window.logic.handleLogin);
-    }
-    if (buyForm) {
-        buyForm.removeEventListener('submit', window.logic.handleBuy);
-        buyForm.addEventListener('submit', window.logic.handleBuy);
-    }
+    async function saveUser(user) {
+        try {
+            const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+                headers: {
+                    "X-Master-Key": API_KEY
+                }
+            });
 
-    console.log('=== Logic init COMPLETE ===');
-};
+            const data = await res.json();
+            let users = data.record || [];
 
-window.logic.logout = function () {
-    window.logic.currentUser = null;
-    localStorage.removeItem('srtUser');
-    if (document.getElementById('login')) {
-        document.getElementById('login').style.display = 'flex';
-    }
-    if (document.getElementById('buy-ticket')) {
-        document.getElementById('buy-ticket').style.display = 'none';
-    }
-    alert('Logged out successfully!');
-    console.log('User logged out');
-};
+            const userIndex = users.findIndex(u => u.username === user.username);
+            if (userIndex !== -1) {
+                users[userIndex] = user;
+            }
 
-// Init guard flag
-window.logic._initDone = false;
-
-
-
-window.logic.handleLogin = async function (e) {
-    e.preventDefault();
-    console.log('Login form SUBMIT');
-
-    const usernameEl = this.querySelector('input[type="text"]');
-    const passwordEl = this.querySelector('input[type="password"]');
-    const username = usernameEl ? usernameEl.value.trim() : '';
-    const password = passwordEl ? passwordEl.value : '';
-
-    if (!username || !password) {
-        alert('Enter username and password');
-        return;
+            await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Master-Key": API_KEY
+                },
+                body: JSON.stringify(users)
+            });
+            console.log('User saved successfully');
+        } catch (err) {
+            console.error('Save error:', err);
+        }
     }
 
-    const result = await loginOrRegister(username, password);
-    console.log('Full result:', result);
-
-    if (result && (result.status === 'login' || result.status === 'registered')) {
-        window.logic.currentUser = result.user;
-        localStorage.setItem('srtUser', JSON.stringify(result.user));
-        document.getElementById('login').style.display = 'none';
-        document.getElementById('buy-ticket').style.display = 'flex';
-        alert(`Welcome ${result.user.username}! Balance: ${result.user.balance.toFixed(2)} EUR`);
-        console.log('Success');
-    } else {
-        alert(result?.message || 'Login failed');
-    }
-};
-
-window.logic.handleBuy = async function (e) {
-    e.preventDefault();
-    console.log('Buy form SUBMIT');
-
-    if (!window.logic.currentUser) {
-        alert('Please login first!');
-        return;
-    }
-
-    const zonesEl = document.getElementById('zones');
-    const typeEl = document.getElementById('type');
-    const zoneMarkedEl = this.querySelector('[name="zone-marked"]');
-    const dateEl = this.querySelector('[name="date-marked"]');
-    const timeEl = this.querySelector('[name="time-marked"]');
-
-    const zones = zonesEl ? zonesEl.value : '1';
-    const type = typeEl ? typeEl.value : 'full2';
-    const zoneMarked = zoneMarkedEl ? zoneMarkedEl.value : '';
-    const date = dateEl ? dateEl.value : new Date().toISOString().split('T')[0];
-    const time = timeEl ? timeEl.value : new Date().toTimeString().slice(0, 5);
-
-    const validityHoursMap = {
-      '1': '0.5', '2': '1', '3': '1.5', '4': '2', '5': '2.5',
-      '6': '3', '7': '3.5', '8': '4', '9': '4.5', '10': '5', 'all': '24'
+    const priceTable = {
+        '1': 0.10, '2': 0.20, '3': 0.30, '4': 0.40, '5': 0.50,
+        '6': 0.60, '7': 0.70, '8': 0.80, '9': 0.90, '10': 1.00, 'all': 2.00
     };
-    const validityHours = validityHoursMap[zones];
 
-    const price = calculatePrice(zones, type);
-
-    if (window.logic.currentUser.balance < price) {
-        alert(`Insufficient balance! Need ${price.toFixed(2)}EUR, have ${window.logic.currentUser.balance.toFixed(2)}EUR`);
-        return;
+    function calculatePrice(zonesStr, type) {
+        const base = priceTable[zonesStr] || 0.10;
+        let multiplier = 1;
+        switch (type) {
+            case 'full1': multiplier = 3; break;
+            case 'discounted2': multiplier = 0.5; break;
+            case 'discounted1': multiplier = 1.5; break;
+        }
+        return base * multiplier;
     }
 
-    const ticketData = { zones, validityHours, type, zoneMarked, date, time, price: price.toFixed(2) };
-    window.logic.currentUser.tickets[`TKT_${Date.now()}`] = ticketData;
-    window.logic.currentUser.balance -= price;
-    window.logic.currentUser.balance = Math.max(0, parseFloat(window.logic.currentUser.balance.toFixed(2)));
-
-    await saveUser(window.logic.currentUser);
-    localStorage.setItem('srtUser', JSON.stringify(window.logic.currentUser));
-    generateTicket(ticketData);
-    alert(`Ticket ${ticketId.slice(-4)} bought! Balance: ${window.logic.currentUser.balance.toFixed(2)} EUR`);
-
-    // Reset
-    zonesEl.value = '1';
-    zoneMarkedEl.value = '';
-    dateEl.value = '';
-    timeEl.value = '';
-};
-
-window.logic.addMoney = async function () {
-    if (!window.logic.currentUser) {
-        alert('Please login first!');
-        return;
+    function generateTicket(ticketData) {
+        console.log('Ticket generated:', ticketData);
+        alert('Ticket bought! PDF/QR generation ready (check console).');
     }
-    const amountStr = prompt('Enter amount to add (EUR):', '10');
-    const amount = parseFloat(amountStr);
-    if (isNaN(amount) || amount <= 0) {
-        alert('Invalid amount!');
-        return;
-    }
-    window.logic.currentUser.balance += amount;
-    await saveUser(window.logic.currentUser);
-    localStorage.setItem('srtUser', JSON.stringify(window.logic.currentUser));
-    alert(`Added ${amount} EUR. New balance: ${window.logic.currentUser.balance.toFixed(2)} EUR`);
-    ; showAccount();
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', window.logic.init);
-    } else {
-        window.logic.init();
+
+    window.logic.init = function () {
+        if (window.logic._initDone) {
+            console.log('Logic init already done, skipping');
+            return;
+        }
+        window.logic._initDone = true;
+        console.log('=== Logic init START ===');
+
+        console.log('Current user:', window.logic.currentUser);
+
+        // Find relevant form based on current page state
+        const loginForm = document.getElementById('login');
+        const buyForm = document.getElementById('buy-ticket');
+        console.log('Login form:', loginForm);
+        console.log('Buy form:', buyForm);
+
+        // Single clean setup: toggle visibility first, then safe listeners
+        if (loginForm && buyForm) {
+            if (window.logic.currentUser) {
+                loginForm.style.display = 'none !important';
+                buyForm.style.display = 'flex';
+                console.log('Logged in - HIDE login, SHOW buy');
+            } else {
+                loginForm.style.display = 'flex';
+                buyForm.style.display = 'none !important';
+                console.log('Not logged - SHOW login, HIDE buy');
+            }
+        }
+
+        // Safe listeners (remove first, then add)
+        if (loginForm) {
+            loginForm.removeEventListener('submit', window.logic.handleLogin);
+            loginForm.addEventListener('submit', window.logic.handleLogin);
+        }
+        if (buyForm) {
+            buyForm.removeEventListener('submit', window.logic.handleBuy);
+            buyForm.addEventListener('submit', window.logic.handleBuy);
+        }
+
+        console.log('=== Logic init COMPLETE ===');
+    };
+
+    window.logic.logout = function () {
+        window.logic.currentUser = null;
+        localStorage.removeItem('srtUser');
+        if (document.getElementById('login')) {
+            document.getElementById('login').style.display = 'flex';
+        }
+        if (document.getElementById('buy-ticket')) {
+            document.getElementById('buy-ticket').style.display = 'none';
+        }
+        alert('Logged out successfully!');
+        console.log('User logged out');
+    };
+
+    // Init guard flag
+    window.logic._initDone = false;
+
+
+
+    window.logic.handleLogin = async function (e) {
+        e.preventDefault();
+        console.log('Login form SUBMIT');
+
+        const usernameEl = this.querySelector('input[type="text"]');
+        const passwordEl = this.querySelector('input[type="password"]');
+        const username = usernameEl ? usernameEl.value.trim() : '';
+        const password = passwordEl ? passwordEl.value : '';
+
+        if (!username || !password) {
+            alert('Enter username and password');
+            return;
+        }
+
+        const result = await loginOrRegister(username, password);
+        console.log('Full result:', result);
+
+        if (result && (result.status === 'login' || result.status === 'registered')) {
+            window.logic.currentUser = result.user;
+            localStorage.setItem('srtUser', JSON.stringify(result.user));
+            document.getElementById('login').style.display = 'none';
+            document.getElementById('buy-ticket').style.display = 'flex';
+            alert(`Welcome ${result.user.username}! Balance: ${result.user.balance.toFixed(2)} EUR`);
+            console.log('Success');
+        } else {
+            alert(result?.message || 'Login failed');
+        }
+    };
+
+    window.logic.handleBuy = async function (e) {
+        e.preventDefault();
+        console.log('Buy form SUBMIT');
+
+        if (!window.logic.currentUser) {
+            alert('Please login first!');
+            return;
+        }
+
+        const zonesEl = document.getElementById('zones');
+        const typeEl = document.getElementById('type');
+        const zoneMarkedEl = this.querySelector('[name="zone-marked"]');
+        const dateEl = this.querySelector('[name="date-marked"]');
+        const timeEl = this.querySelector('[name="time-marked"]');
+
+        const zones = zonesEl ? zonesEl.value : '1';
+        const type = typeEl ? typeEl.value : 'full2';
+        const zoneMarked = zoneMarkedEl ? zoneMarkedEl.value : '';
+        const date = dateEl ? dateEl.value : new Date().toISOString().split('T')[0];
+        const time = timeEl ? timeEl.value : new Date().toTimeString().slice(0, 5);
+
+        const validityHoursMap = {
+            '1': '0.5', '2': '1', '3': '1.5', '4': '2', '5': '2.5',
+            '6': '3', '7': '3.5', '8': '4', '9': '4.5', '10': '5', 'all': '24'
+        };
+        const validityHours = validityHoursMap[zones];
+
+        const price = calculatePrice(zones, type);
+
+        if (window.logic.currentUser.balance < price) {
+            alert(`Insufficient balance! Need ${price.toFixed(2)}EUR, have ${window.logic.currentUser.balance.toFixed(2)}EUR`);
+            return;
+        }
+
+        const ticketData = { zones, validityHours, type, zoneMarked, date, time, price: price.toFixed(2) };
+        window.logic.currentUser.tickets[`TKT_${Date.now()}`] = ticketData;
+        window.logic.currentUser.balance -= price;
+        window.logic.currentUser.balance = Math.max(0, parseFloat(window.logic.currentUser.balance.toFixed(2)));
+
+        await saveUser(window.logic.currentUser);
+        localStorage.setItem('srtUser', JSON.stringify(window.logic.currentUser));
+        generateTicket(ticketData);
+        alert(`Ticket ${ticketId.slice(-4)} bought! Balance: ${window.logic.currentUser.balance.toFixed(2)} EUR`);
+
+        // Reset
+        zonesEl.value = '1';
+        zoneMarkedEl.value = '';
+        dateEl.value = '';
+        timeEl.value = '';
+    };
+
+    window.logic.addMoney = async function () {
+        if (!window.logic.currentUser) {
+            alert('Please login first!');
+            return;
+        }
+        const amountStr = prompt('Enter amount to add (EUR):', '10');
+        const amount = parseFloat(amountStr);
+        if (isNaN(amount) || amount <= 0) {
+            alert('Invalid amount!');
+            return;
+        }
+        window.logic.currentUser.balance += amount;
+        await saveUser(window.logic.currentUser);
+        localStorage.setItem('srtUser', JSON.stringify(window.logic.currentUser));
+        alert(`Added ${amount} EUR. New balance: ${window.logic.currentUser.balance.toFixed(2)} EUR`);
+        ; showAccount();
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', window.logic.init);
+        } else {
+            window.logic.init();
+        }
     }
 }
-
-showHome();
+    showHome();
