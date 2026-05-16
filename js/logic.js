@@ -27,7 +27,6 @@ const i18n = {
         add_money: "Add Money",
         logout: "Logout",
 
-
         /* Connection Types */
         regional_bahn_train: "Regional Bahn Train",
         regional_express_train: "Regional Express Train",
@@ -303,7 +302,7 @@ const t = i18n[lang] || i18n.en;
 
 document.querySelector("header").innerHTML = `
 <button onclick="showHome()">
-    <img src="img/icons/logo.svg" alt="">
+    <img src="img/icons/logo.svg" alt="" class="logo">
 </button>
 `;
 
