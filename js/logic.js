@@ -307,27 +307,28 @@ document.querySelector("header").innerHTML = `
 `;
 
 document.querySelector("footer").innerHTML = `
-<button onclick="showHome()">
-                    <img src="img/links-icons/home-page.svg" alt="">
-                </button>
-                <button onclick="showAccount()">
-                    <img src="img/links-icons/account.svg" alt="">
-                </button>
-                <button onclick="showConnectionTypes()">
-                    <img src="img/links-icons/connection-types.svg" alt="">
-                </button>
-                <button onclick="showVehicles()">
-                    <img src="img/links-icons/vehicles.svg" alt="">
-                </button>
-                <button onclick="showFare()">
-                    <img src="img/links-icons/fare.svg" alt="">
-                </button>
-                <button onclick="showAbout()">
-                    <img src="img/links-icons/about.svg" alt="">
-                </button>
-                <button onclick="showTechnicalDetails()">
-                    <img src="img/links-icons/technical-details.svg" alt="">
-                </button>
+    
+        <button onclick="showHome()">
+            <img src="img/links-icons/home-page.svg" alt="">
+        </button>
+        <button onclick="showAccount()">
+            <img src="img/links-icons/account.svg" alt="">
+        </button>
+        <button onclick="showConnectionTypes()">
+            <img src="img/links-icons/connection-types.svg" alt="">
+        </button>
+        <button onclick="showVehicles()">
+            <img src="img/links-icons/vehicles.svg" alt="">
+        </button>
+        <button onclick="showFare()">
+            <img src="img/links-icons/fare.svg" alt="">
+        </button>
+        <button onclick="showAbout()">
+            <img src="img/links-icons/about.svg" alt="">
+        </button>
+        <button onclick="showTechnicalDetails()">
+            <img src="img/links-icons/technical-details.svg" alt="">
+        </button>
 `
 
 function scrollUp() {
