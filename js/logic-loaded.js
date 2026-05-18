@@ -1202,3 +1202,7 @@ function showSetupWarning() {
         <button onclick="showHome()">No</button>
     `
 }
+
+function setLastPage(pageName) {
+    localStorage.setItem('lastPage', pageName);
+}
