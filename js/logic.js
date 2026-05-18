@@ -301,6 +301,7 @@ const lang = navigator.language.slice(0, 2);
 const t = i18n[lang] || i18n.en;
 
 document.querySelector("header").innerHTML = `
+<div class="app-drawer-wrapper"></div>
 <button onclick="showHome()">
     <img src="img/icons/logo.svg" alt="" class="logo">
 </button>
