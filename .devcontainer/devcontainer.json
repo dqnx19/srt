@@ -1,13 +1,6 @@
 {
   "name": "SRT",
-  "image": "mcr.microsoft.com/devcontainers/base:debian",
-
-  "features": {
-    "ghcr.io/devcontainers/features/git:1": {},
-    "ghcr.io/devcontainers/features/python:1": {
-      "version": "latest"
-    }
-  },
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
 
   "customizations": {
     "vscode": {
@@ -17,12 +10,8 @@
     }
   },
 
-  "forwardPorts": [80],
-
-  "postStartCommand": "python -m http.server 80 --bind 0.0.0.0",
-
   "hostRequirements": {
-    "cpus": 2,
+    "cpus": 4,
     "memory": "2gb"
   }
 }
