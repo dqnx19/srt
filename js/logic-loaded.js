@@ -1,5 +1,12 @@
+const header =  document.createElement("header")
+const main =    document.createElement("main")
+const footer =  document.createElement("footer")
+
+document.body.appendChild(header)
+document.body.appendChild(main)
+document.body.appendChild(footer)
+
 const body = document.body;
-const main = document.querySelector("main");
 
 const i18n = {
     en: {
@@ -309,28 +316,27 @@ document.querySelector("header").innerHTML = `
 `;
 
 document.querySelector("footer").innerHTML = `
-    
-        <button onclick="showHome()">
-            <img src="img/links-icons/home-page.svg" alt="">
-        </button>
-        <button onclick="showAccount()">
-            <img src="img/links-icons/account.svg" alt="">
-        </button>
-        <button onclick="showConnectionTypes()">
-            <img src="img/links-icons/connection-types.svg" alt="">
-        </button>
-        <button onclick="showVehicles()">
-            <img src="img/links-icons/vehicles.svg" alt="">
-        </button>
-        <button onclick="showFare()">
-            <img src="img/links-icons/fare.svg" alt="">
-        </button>
-        <button onclick="showAbout()">
-            <img src="img/links-icons/about.svg" alt="">
-        </button>
-        <button onclick="showTechnicalDetails()">
-            <img src="img/links-icons/technical-details.svg" alt="">
-        </button>
+    <button onclick="showHome()">
+        <img src="img/links-icons/home-page.svg" alt="">
+    </button>
+    <button onclick="showAccount()">
+        <img src="img/links-icons/account.svg" alt="">
+    </button>
+    <button onclick="showConnectionTypes()">
+        <img src="img/links-icons/connection-types.svg" alt="">
+    </button>
+    <button onclick="showVehicles()">
+        <img src="img/links-icons/vehicles.svg" alt="">
+    </button>
+    <button onclick="showFare()">
+        <img src="img/links-icons/fare.svg" alt="">
+    </button>
+    <button onclick="showAbout()">
+        <img src="img/links-icons/about.svg" alt="">
+    </button>
+    <button onclick="showTechnicalDetails()">
+        <img src="img/links-icons/technical-details.svg" alt="">
+    </button>
 `
 
 function scrollUp() {
@@ -340,19 +346,12 @@ function scrollUp() {
     });
 }
 
-function showHome() {
-    document.title = t.home_title;
-    main.innerHTML = `
-    <h1>${t.home}</h1>
-    
-    `
-}
-
-function showConnectionTypes() {
-    document.title = t.connection_types_title;
-    scrollUp();
-    main.innerHTML = `
-    <h1>${t.connection_types}</h1>
+const pages = {
+    home: `
+        <h1>Home</h1>
+    `,
+    connection_types: `
+        <h1>${t.connection_types}</h1>
             <section>
                 <h2>${t.regional_bahn_train}</h2>
                 <p>${t.stops_at}: ${t.every_station}</p>
@@ -393,14 +392,10 @@ function showConnectionTypes() {
                 <p>${t.stops_at}: ${t.every_station}</p>
                 <p>${t.route_type}: ${t.urban}/${t.suburban}</p>
             </section>
-    `
-}
+    `,
 
-function showVehicles() {
-    document.title = t.vehicles_title;
-    scrollUp();
-    main.innerHTML = `
-    <h1>Vehicles</h1>
+    vehicles: `
+        <h1>Vehicles</h1>
         <section>
             <h2>Skoda 18Ev ${t.cars_2}</h2>
             <p>${t.class}: EU 1000</p>
@@ -690,14 +685,9 @@ function showVehicles() {
                     <p>EL 1000</p>
                 </span>
         </section>
-    `
-}
-
-function showFare() {
-    document.title = t.fare_title;
-    scrollUp();
-    main.innerHTML = `
-    <h1>${t.fare}</h1>
+    `,
+    fare: `
+        <h1>${t.fare}</h1>
             <section id="tickets">
                 <h2>${t.tickets}</h2>
                 <table>
@@ -846,14 +836,10 @@ function showFare() {
                     </tbody>
                 </table>
             </section>
-    `
-}
+    `,
 
-function showAbout() {
-    document.title = t.about_title;
-    scrollUp();
-    main.innerHTML = `
-    <h1>${t.about}</h1>
+    about: `
+        <h1>${t.about}</h1>
         <section>
             <h2>${t.what_is_srt}</h2>
             <ul>
@@ -864,14 +850,10 @@ function showAbout() {
                 <li>${t.anything_else}</li>
             </ul>
         </section>
-    `;
-}
+    `,
 
-function showTechnicalDetails() {
-    document.title = t.technical_details_title;
-    scrollUp();
-    main.innerHTML = `
-    <h1>${t.technical_details}</h1>
+    technical_details: `
+        <h1>${t.technical_details}</h1>
             <section>
                 <h2>${t.rolling_stock_classes}</h2>
                 <table>
@@ -920,272 +902,14 @@ function showTechnicalDetails() {
                 <li>{gong} {station name} terminus station please exit the vehicle.</li>
             </section>
     `
-}
 
-const BIN_ID = "69e506ab36566621a8cd6ac0";
-const API_KEY = "$2a$10$TocawYMNB.KMjjn2ISFy9ecxge8ja9EHy3PPq75uApN/56cCRaJwq";
-
-
-window.logic = {};
-window.logic.currentUser = JSON.parse(localStorage.getItem('srtUser') || 'null');
-
-// --- HASH ---
-async function sha256(str) {
-    const msgUint8 = new TextEncoder().encode(str);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
-// --- LOGIN OR REGISTER ---
-window.logic.loginOrRegister = async function (username, password) {
-    const passwordHash = await sha256(password);
-
-    const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-        headers: { "X-Master-Key": API_KEY }
-    });
-
-    const data = await res.json();
-    let users = Array.isArray(data.record) ? data.record : [];
-
-    let user = users.find(u => u.username === username);
-
-    if (user) {
-        if (user.passwordHash === passwordHash) {
-            window.logic.currentUser = user;
-            localStorage.setItem('srtUser', JSON.stringify(user));
-            alert("Logged in!");
-            showAccount();
-        } else {
-            alert("Wrong password!");
-        }
-    } else {
-        const newUser = {
-            username,
-            passwordHash,
-            balance: 0,
-            tickets: {}
-        };
-
-        users.push(newUser);
-
-        await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "X-Master-Key": API_KEY
-            },
-            body: JSON.stringify(users)
-        });
-
-        window.logic.currentUser = newUser;
-        localStorage.setItem('srtUser', JSON.stringify(newUser));
-
-        alert("Registered!");
-        showAccount();
-    }
 };
 
-// --- SAVE USER ---
-async function saveUser(user) {
-    const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-        headers: { "X-Master-Key": API_KEY }
-    });
-
-    const data = await res.json();
-    let users = data.record || [];
-
-    const index = users.findIndex(u => u.username === user.username);
-    if (index !== -1) users[index] = user;
-
-    await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-            "X-Master-Key": API_KEY
-        },
-        body: JSON.stringify(users)
-    });
-}
-
-// --- ADD MONEY ---
-window.logic.addMoney = async function () {
-    if (!window.logic.currentUser) {
-        alert("Login first!");
-        return;
-    }
-
-    window.logic.currentUser.balance += 1;
-
-    await saveUser(window.logic.currentUser);
-    localStorage.setItem('srtUser', JSON.stringify(window.logic.currentUser));
-
-    alert("Added 1€");
-    showAccount();
-};
-
-// --- PRICE ---
-const priceTable = {
-    '1': 0.10, '2': 0.20, '3': 0.30, '4': 0.40, '5': 0.50,
-    '6': 0.60, '7': 0.70, '8': 0.80, '9': 0.90, '10': 1.00, 'all': 2.00
-};
-
-function calculatePrice(zones, type) {
-    let base = priceTable[zones] || 0.10;
-
-    switch (type) {
-        case 'full1': return base * 3;
-        case 'discounted2': return base * 0.5;
-        case 'discounted1': return base * 1.5;
-        default: return base;
-    }
-}
-
-// --- BUY TICKET ---
-window.logic.buyTicket = async function (e) {
-    e.preventDefault();
-
-    if (!window.logic.currentUser) {
-        alert("Login first!");
-        return;
-    }
-
-    const form = e.target;
-
-    const zones = form.querySelector('#zones').value;
-    const type = form.querySelector('#type').value;
-    const zoneMarked = form.querySelector('[name="zone-marked"]').value;
-    const date = form.querySelector('[name="date-marked"]').value || new Date().toISOString().split('T')[0];
-    const time = form.querySelector('[name="time-marked"]').value || new Date().toTimeString().slice(0, 5);
-
-    const validityMap = {
-        '1': '0.5', '2': '1', '3': '1.5', '4': '2', '5': '2.5',
-        '6': '3', '7': '3.5', '8': '4', '9': '4.5', '10': '5', 'all': '24'
-    };
-
-    const price = calculatePrice(zones, type);
-
-    if (window.logic.currentUser.balance < price) {
-        alert("Not enough money!");
-        return;
-    }
-
-    const ticketId = "TKT_" + Date.now();
-
-    const ticket = {
-        zones,
-        validityHours: validityMap[zones],
-        type,
-        zoneMarked,
-        date,
-        time,
-        price: price.toFixed(2)
-    };
-
-    window.logic.currentUser.tickets[ticketId] = ticket;
-    window.logic.currentUser.balance -= price;
-
-    await saveUser(window.logic.currentUser);
-    localStorage.setItem('srtUser', JSON.stringify(window.logic.currentUser));
-
-    alert(`Ticket ${ticketId.slice(-4)} bought!`);
-    showAccount();
-};
-
-// --- UI ---
-function showAccountLoggedIn() {
-    const user = window.logic.currentUser;
-
-    main.innerHTML = `
-        <h1>Account</h1>
-
-        <section>
-            <p>Balance: ${user.balance.toFixed(2)} €</p>
-            <button onclick="window.logic.addMoney()">Add 1€</button>
-            <button onclick="logout()">Logout</button>
-        </section>
-
-        <section>
-            <h2>Buy Ticket</h2>
-            <form id="buy-ticket">
-                <select id="zones">
-                    <option value="1">1 zone / 0.5h</option>
-                    <option value="2">2 zones / 1h</option>
-                    <option value="3">3 zones / 1.5h</option>
-                    <option value="4">4 zones / 2h</option>
-                    <option value="5">5 zones / 2.5h</option>
-                    <option value="6">6 zones / 3h</option>
-                    <option value="7">7 zones / 3.5h</option>
-                    <option value="8">8 zones / 4h</option>
-                    <option value="9">9 zones / 4.5h</option>
-                    <option value="10">10 zones / 5h</option>
-                    <option value="all">All zones / 24h</option>
-                </select>
-
-                <select id="type">
-                    <option value="full2">Full 2nd class</option>
-                    <option value="full1">Full 1st class</option>
-                    <option value="discounted2">Discounted 2nd class</option>
-                    <option value="discounted1">Discounted 1st class</option>
-                </select>
-
-                <input type="text" name="zone-marked" placeholder="Zone Marked">
-                <input type="date" name="date-marked">
-                <input type="time" name="time-marked">
-
-                <button type="submit">Buy Ticket</button>
-            </form>
-        </section>
-    `;
-
-    initEvents();
-}
-
-function showAccountLoggedOut() {
-    main.innerHTML = `
-        <h1>Account</h1>
-
-        <form id="login">
-            <input type="text" placeholder="Username">
-            <input type="password" placeholder="Password">
-            <button type="submit">Login / Register</button>
-        </form>
-    `;
-
-    initEvents();
-}
-
-function showAccount() {
-    if (window.logic.currentUser) {
-        showAccountLoggedIn();
-    } else {
-        showAccountLoggedOut();
-    }
-}
-
-function logout() {
-    window.logic.currentUser = null;
-    localStorage.removeItem('srtUser');
-    showAccountLoggedOut();
-}
-
-// --- EVENTS ---
-function initEvents() {
-    const loginForm = document.getElementById("login");
-    const buyForm = document.getElementById("buy-ticket");
-
-    if (loginForm) {
-        loginForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-            const username = this.querySelector('input[type="text"]').value;
-            const password = this.querySelector('input[type="password"]').value;
-            window.logic.loginOrRegister(username, password);
-        });
-    }
-
-    if (buyForm) {
-        buyForm.addEventListener("submit", window.logic.buyTicket);
-    }
+function showPage(pageNameLowerCase, pageNameUpperCase) {
+    scrollUp();
+    localStorage.setItem('lastPage', pageNameLowerCase);
+    document.title = pageNameUpperCase;
+    main.innerHTML = pages[pageNameLowerCase];
 }
 
 document.addEventListener("keydown", (event) => {
@@ -1195,11 +919,11 @@ document.addEventListener("keydown", (event) => {
 });
 
 function showSetupWarning() {
-    body.innerHTML = `
+    main.innerHTML = `
         <h1>Setup Warning</h1>
         <p>Are you sure you want to setup the app?</p>
         <button onclick="showSetup()">Yes</button>
-        <button onclick="showHome()">No</button>
+        <button onclick="loadLastPage()">No</button>
     `
 }
 
