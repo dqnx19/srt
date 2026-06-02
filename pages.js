@@ -418,6 +418,7 @@ function showServices() {
                 <li>Delicious meals</li>
                 <li>Refreshments</li>
             </ul>
+            <button onclick="window.location.href=('documents/dining-car-menu.pdf')">View Menu</button>
         </section>
         <section>
             <h2>Bicycle transport</h2>
@@ -488,12 +489,13 @@ function showFare() {
             <table>
                 <thead>
                     <tr>
-                        <th>Zones Validiry</th>
+                        <th>Zones Validity</th>
                         <th>Time Validity</th>
                         <th>Full 2nd Class</th>
                         <th>Full 1st Class</th>
                         <th>Discounted 2nd Class</th>
                         <th>Discounted 1st Class</th>
+                    </tr>
                 </thead>
                 <tbody>
                     <tr>
@@ -654,7 +656,7 @@ function showAbout() {
 
 function showTechnicalDetails() {
     scrollUp();
-    document.title = "Technical Details - SRT"
+    document.title = "Technical Details - SRT";
     main.innerHTML = `
         <h1>Technical Details</h1>
         <section>
