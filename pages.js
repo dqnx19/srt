@@ -420,7 +420,6 @@ function showServices() {
             </ul>
             <button onclick="window.location.href=('documents/dining-car-menu.docx')">View Menu (docx)</button>
             <button onclick="window.location.href=('documents/dining-car-menu.pdf')">View Menu (pdf)</button>
-            <button onclick="window.location.href=('documents/dining-car-menu.htm')">View Menu (html web page)</button>
         </section>
         <section>
             <h2>Bicycle transport</h2>
